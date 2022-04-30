@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('film_id');
             $table->decimal('score', 3, 1);
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->timestamps();
             $table->foreign ('user_id')->references('id')->on('users');
             $table->foreign ('film_id')->references('id')->on('films');

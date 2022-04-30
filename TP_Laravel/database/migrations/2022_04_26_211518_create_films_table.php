@@ -21,8 +21,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('rating', 5);
             $table->unsignedBigInteger('language_id');
-            $table->string('special_features',200);
-            $table->string('image', 40);
+            $table->string('special_features',200)->nullable();
+            $table->string('image', 40)->nullable();
             $table->timestamps();
             $table->foreign('language_id')->references('id')->on('languages');
         });
