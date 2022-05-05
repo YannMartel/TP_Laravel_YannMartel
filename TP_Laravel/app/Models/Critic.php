@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class criticModel extends Model
+class Critic extends Model
 {
     use HasFactory;
 
@@ -18,4 +18,15 @@ class criticModel extends Model
         'created_at',
         'updated_at'
     ];
+
+
+    public function film()
+    {
+        return $this->belongsTo(film::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(users::class);
+    }
 }

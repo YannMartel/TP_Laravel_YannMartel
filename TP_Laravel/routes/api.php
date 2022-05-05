@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\Admin;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,21 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::Get('/films', 'App\Http\Controllers\filmController@index');
+
+Route::Get('/films/{id}', 'App\Http\Controllers\filmController@filmAvecCritique');
+
+Route::Get('/acteurs/{id}', 'App\Http\Controllers\filmController@acteurPourUnFilm');
+
+Route::Post('/user/register', 'App\Http\Controllers\userController@register');
+
+Route::post('/users/login', 'App\Http\Controllers\UserController@login');
+
+Route::middleware('auth:sanctum')->get('/user', 'App\Http\Controllers\UserController@show');
+
+Route::middleware('auth:sanctum')->post('/critic', 'App\Http\Controllers\criticController@store');
+
+Route::Post('/films/add', 'App\Http\Controllers\filmController@ajoutFilm')->middleware('auth:sanctum')->middleware(Admin::class);
+
+

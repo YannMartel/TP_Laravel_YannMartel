@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class filmModel extends Model
+class Film extends Model
 {
     use HasFactory;
 
@@ -13,6 +13,7 @@ class filmModel extends Model
         'id',
         'title',
         'release_year',
+        'length',
         'description',
         'rating',
         'language_id',
@@ -20,4 +21,18 @@ class filmModel extends Model
         'image',
         'created_at'
     ];
+
+    public function critics()
+    {
+        return $this->hasMany(Critic::class);
+    }
+
+    public function language()
+    {
+        return $this->hasOne(Language::class);
+    }
+
+    public function actors(){
+        return $this->belongsToMany(actor::class);
+    }
 }
