@@ -50,4 +50,33 @@ class userController extends Controller
         return auth()->user();
         // Auth::user()
     }
+
+    public function logout() {
+        Auth::user()->tokens->each(function($token, $key) {
+            $token->delete();
+        });
+        
+        return response()->json('Successfully logged out');
+    }
+    //https://stackoverflow.com/questions/58280790/remove-a-laravel-passport-user-token
+
+    public function profilUpdate(Request $request){
+
+        $user =Auth::user();
+        $user->email = $request['email'];
+        $user->last_name = $request['last_name'];
+        $user->first_name = $request['first_name'];
+        $user->role_id = $request['role_id'];
+        $user->save();
+
+        return response()->json('Profil successfully updated');
+    }
+
+    public function passwordUpdate(Request $request){
+        $user =Auth::user();
+        $user->password = bcrypt($request['password']);
+        $user->save();
+
+        return response()->json('Password successfully updated');
+    }
 }

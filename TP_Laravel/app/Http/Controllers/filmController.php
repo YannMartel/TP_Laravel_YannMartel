@@ -10,30 +10,50 @@ use App\Http\Middleware\Admin;
 
 class filmController extends Controller
 {
-
-
-    public function index()
+    public function index(Request $request)
     {
-        return Film::paginate(20);
+        $keyword = $request->input('keyword', '%');
+        $rating = $request->input('rating');
+        $maxLength = $request->input('max-length', 500);
+        
+
+        if(empty($rating))
+        {
+            return Film::where(function($query)use($keyword){
+                $query->where('description', 'LIKE', '%'.$keyword.'%')
+                ->orWhere('title', 'LIKE', '%'.$keyword.'%');
+            })
+            ->where('length', '<=', $maxLength) 
+            ->paginate(20);                            
+        }
+        else{
+            return Film::where(function($query)use($keyword){
+                $query->Where('description', 'LIKE', '%'.$keyword.'%')
+                ->orwhere('title', 'LIKE', '%'.$keyword.'%');
+            })
+            ->where('length', '<=', $maxLength)
+            ->where('rating', '=', $rating)
+            ->paginate(20); 
+        }        
     }
 
 
-     public function filmAvecCritique(int $id)
-     {
-         $film = Film::find($id);
-         return [
-             $film,
-             $film->critics()->get()
-         ];
-     }
+    public function filmAvecCritique(int $id)
+    {
+        $film = Film::find($id);
+        return [
+            $film,
+            $film->critics()->get()
+        ];
+    }
 
-     public function acteurPourUnFilm(int $id){
-         $film = Film::find($id);
-         return $film->actors()->get();
-     }
+    public function acteurPourUnFilm(int $id){
+        $film = Film::find($id);
+        return $film->actors()->get();
+    }
 
-     public function ajoutFilm(Request $request)
-     {
+    public function ajoutFilm(Request $request)
+    {
         $donnee = $request->all();
         $objet = new Film;
 
@@ -45,6 +65,14 @@ class filmController extends Controller
         $objet->language_id = $request['language_id'];
 
         $objet->save();
-     }
+    }
 
+    public function deleteFilm(int $id){
+        $film = Film::find($id);
+        $film->delete();
+        return response()->json([
+			'status' => 'Success',
+			'message' => 'Film deleted',
+		], 200);
+    }
 }

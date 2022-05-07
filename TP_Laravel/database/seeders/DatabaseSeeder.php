@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             actorsSeeder::class,
             languagesSeeder::class,
             filmsSeeder::class,
+            rolesSeeder::class,
         ]);
     }
 }
